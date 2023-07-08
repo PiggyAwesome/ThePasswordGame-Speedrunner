@@ -1,5 +1,6 @@
 # ThePasswordGame-Auto
 Complex python script that plays https://neal.fun/password-game/ completely automatically
+### Src releases at 10 stars ⭐
 
 - [x] Rule 1 `Your password must be at least 5 characters.`
 - [x] Rule 2 `Your password must include a number.`
@@ -27,4 +28,4 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - Automatically calculates the current moon phase with great accuracy
 - Automatically finds the name of the country in the geoguesser embed
 - Solves any chess puzzle using the Stockfish chess engine, after parsing the image
-- Automatically balences out all digits and Elements
+- Automatically balences out all digits, Roman numerals and elements
