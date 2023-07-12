@@ -20,6 +20,7 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - [x] Rule 16 `Your password must include the best move in algebraic chess notation.`
 - [x] Rule 17 `🥚 ← This is my chicken Paul. He hasn't hatched yet, please put him in your password and keep him safe.`
 - [x] Rule 18 `The elements in your password must have atomic numbers that add up to 200.`
+- [ ] Rule 18-35 coming soon
 
 
 ### Notable features:
@@ -28,4 +29,4 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - Automatically calculates the current moon phase with great accuracy
 - Automatically finds the name of the country in the geoguesser embed
 - Solves any chess puzzle using the Stockfish chess engine, after parsing the image
-- Automatically balences out all digits, Roman numerals and elements
+- Automatically balances out all digits, Roman numerals and elements
