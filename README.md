@@ -26,7 +26,9 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - [x] Rule 22 `Your password must contain one of the following affirmations`
 - [x] Rule 23 `Paul has hatched! Please don't forget to feed him, he eats three 🐛 every minute.`
 - [x] Rule 24 `Your password must include the URL of a xx minute yy second long YouTube video.`
-- [ ] Rule 25-35 coming soon
+- [x] Rule 25 `A sacrifice must be made. Pick 2 letters that you will no longer be able to use.`
+- [x] Rule 26 `Your password must contain twice as many italic characters as bold.`
+- [ ] Rule 27-35 coming soon
 
 
 ### Notable features:
