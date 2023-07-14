@@ -30,3 +30,4 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - Automatically finds the name of the country in the geoguesser embed
 - Solves any chess puzzle using the Stockfish chess engine, after parsing the image
 - Automatically balances out all digits, Roman numerals and elements
+- Automatically finds the correct youtube video with exact length.
