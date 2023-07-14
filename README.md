@@ -20,7 +20,13 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - [x] Rule 16 `Your password must include the best move in algebraic chess notation.`
 - [x] Rule 17 `🥚 ← This is my chicken Paul. He hasn't hatched yet, please put him in your password and keep him safe.`
 - [x] Rule 18 `The elements in your password must have atomic numbers that add up to 200.`
-- [ ] Rule 18-35 coming soon
+- [x] Rule 19 `All the vowels in your password must be bolded.`
+- [x] Rule 20 `Oh no! Your password is on fire. Quick, put it out!`
+- [x] Rule 21 `Your password is not strong enough 🏋️‍♂️`
+- [x] Rule 22 `Your password must contain one of the following affirmations`
+- [x] Rule 23 `Paul has hatched! Please don't forget to feed him, he eats three 🐛 every minute.`
+- [x] Rule 24 `Your password must include the URL of a xx minute yy second long YouTube video.`
+- [ ] Rule 25-35 coming soon
 
 
 ### Notable features:
@@ -30,4 +36,4 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - Automatically finds the name of the country in the geoguesser embed
 - Solves any chess puzzle using the Stockfish chess engine, after parsing the image
 - Automatically balances out all digits, Roman numerals and elements
-- Automatically finds the correct youtube video with exact length.
+- Automatically finds the correct youtube video with exact length. (I made a half-finished scraper before I found thepasswordgame.netlify.app. I diddnt have the heart to delete it so it's just commented out lol)
