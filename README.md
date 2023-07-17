@@ -32,9 +32,7 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - [x] Rule 28 `Your password must include this color in hex.`
 - [x] Rule 29 `All roman numerals must be in Times New Roman..`
 - [x] Rule 30 `The font size of every digit must be equal to its square.`
-- [x] Rule 31 `Every instance of the same letter must have a different font size.` (had a horrible time figuring this out lmao, sorry for ugly code)
-- [ ] Rule 32-35 coming soon
-
+- [x] Rule 31 `Every instance of the same letter must have a different font size.`
 
 ### Notable features:
 - Automatically solves captcha
@@ -49,3 +47,5 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 ### Problems:
 - `Rule 16` Occasionally, the best chess move will be incorrect.
 - `Rule 24` Fails a significant amount of times because of unwanted elements in the video url. (You can help fix this issue by finding new links for assets/youtube_links.json)
+
+### Sorry for my ugly code. I usually fix it up at the end, but I'm not finished yet.
