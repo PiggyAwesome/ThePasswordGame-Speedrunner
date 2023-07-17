@@ -1,0 +1,5 @@
+geopy==2.3.0
+playwright==1.35.0
+pylunar==0.6.0
+requests==2.31.0
+stockfish==3.28.0
