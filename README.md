@@ -28,7 +28,12 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - [x] Rule 24 `Your password must include the URL of a xx minute yy second long YouTube video.`
 - [x] Rule 25 `A sacrifice must be made. Pick 2 letters that you will no longer be able to use.`
 - [x] Rule 26 `Your password must contain twice as many italic characters as bold.`
-- [ ] Rule 27-35 coming soon
+- [x] Rule 27 `At least 30% of your password must be in the Wingdings font.`
+- [x] Rule 28 `Your password must include this color in hex.`
+- [x] Rule 29 `All roman numerals must be in Times New Roman..`
+- [x] Rule 30 `The font size of every digit must be equal to its square.`
+- [x] Rule 31 `Every instance of the same letter must have a different font size.` (had a horrible time figuring this out lmao, sorry for ugly code)
+- [ ] Rule 32-35 coming soon
 
 
 ### Notable features:
