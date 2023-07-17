@@ -39,3 +39,7 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - Solves any chess puzzle using the Stockfish chess engine, after parsing the image
 - Automatically balances out all digits, Roman numerals and elements
 - Automatically finds the correct youtube video with exact length. (I made a half-finished scraper before I found thepasswordgame.netlify.app. I diddnt have the heart to delete it so it's just commented out lol)
+
+
+### Problems:
+- `Rule 16` Occasionally, the best chess move will be incorrect.
