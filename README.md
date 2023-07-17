@@ -43,3 +43,4 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 
 ### Problems:
 - `Rule 16` Occasionally, the best chess move will be incorrect.
+- `Rule 24` Fails a significant amount of times because of unwanted elements in the video url. (You can help fix this issue by finding new links for assets/youtube_links.json)
