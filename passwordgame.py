@@ -111,6 +111,7 @@ class Password:
         confirm_sacrifice = "#__layout > div > div > div.password-wrapper.has-toolbar > div:nth-child(5) > div > div:nth-child(1) > div > div > div > div.sacrafice-area > button"
         colour = "#__layout > div > div > div.password-wrapper.has-toolbar > div:nth-child(5) > div > div:nth-child(1) > div > div > div > div.rand-color"
         new_colour_btn = "#__layout > div > div > div.password-wrapper.has-toolbar > div:nth-child(5) > div > div:nth-child(1) > div > div > div > div.rand-color > img"#'//*[@id="__layout"]/div/div/div[2]/div[5]/div/div[2]/div/div/div/div[2]/img'
+        pass_len_counter = "#__layout > div > div > div.password-wrapper.has-toolbar > div.password-box > div.password-box-inner > div.password-length.show-password-length"
     def getCharacters(self, k=5):
         result = "".join(random.choices(string.ascii_lowercase.strip("aeiou"), k=k))
         return result
@@ -252,7 +253,7 @@ class Password:
             case "WANING_CRESCENT":
                 result = "🌘"
 
-        return "🌑" # result
+        return result
 
 
     def findCountryName(self):
@@ -361,7 +362,7 @@ class Password:
 
         if needed_value < 0:
             self.page.query_selector(self.Selectors.password_field).evaluate(f"node => node.innerHTML = '{og_pass}'"); 
-            input("Yikes! You got unlucky with the elements, the atomic numbers in your password are too big. Retry is needed.\nTIP: If you want this error to occur less frequently for everyone, you can help by finding YouTube videos without periodic table elements in their links, and then making an issue with them, or making a pull request with the links updated in assets/youtube_links.json. This will help grow the database, and lower the chances of failing the challenge.")
+            input("Yikes! You got unlucky with the elements, the atomic numbers in your password are too big. Retry is needed.\nTIP: If you want this error to occur less frequently for everyone, you can help by finding YouTube videos without periodic table elements in their links, and then making an issue, or pull request with the links updated in assets/youtube_links.json. This will help grow the database, and lower the chances of failing the challenge.")
             exit() 
 
         elementsToAddToPassword = {}
@@ -416,7 +417,7 @@ class Password:
         new_password = password
         for vowel in vowels:
             new_password = self.safeReplace(new_password, vowel, f"<strong>{vowel}</strong>")
-
+        self.password_rich = new_password
         return new_password
 
     def getYouTubeVideo(self):
@@ -571,15 +572,10 @@ class Password:
 
     def get_part_9(self):
         self.hex_colour = self.getHexColour()
-        self.password_len = self.getPasswordLen(self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul)
+        self.password_len = self.getPasswordLen(self.hex_colour)
         print(self.password_len)
         self.digits = self.getDigits(passw=self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len)
         self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len
-        return self.password
-
-    def get_part_10(self):
-        self.password_len = self.getPasswordLen()
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.password_len + self.paul + self.food4paul
         return self.password
 
 
@@ -609,12 +605,12 @@ class Password:
     def getHexColour(self):
         retry = True
         while retry:
-            colour_selector = self.page.query_selector(self.Selectors.colour)
+            colour_selector = self.page.wait_for_selector(self.Selectors.colour)
             style = colour_selector.get_attribute("style")
             rgb = style.replace("background: rgb(", "").replace(");", "")
             r,g,b = rgb.split(",")
             hex_colour = f'#{int(r.strip()):02x}{int(g.strip()):02x}{int(b.strip()):02x}'
-            print(hex_colour)
+            # print(hex_colour)
             for nono_letter in self.nono_letters:
                 if nono_letter.lower() in hex_colour or self.getDigits(passw=self.password + hex_colour, Exit=False) == False:
                     colour_button = self.page.query_selector(self.Selectors.new_colour_btn)
@@ -643,7 +639,7 @@ class Password:
 
         for digit in digits:
             font_changed_password = self.safeReplace(font_changed_password, str(digit), f'<span style="font-family: Monospace; font-size: {digit**2}px">{digit}</span>')
-        print(font_changed_password)
+        # print(font_changed_password)
         return font_changed_password
 
     def changeFontSizeLetters_and_makeTimesNewRoman(self, password:str):
@@ -662,11 +658,15 @@ class Password:
         # self.password_rich = output
         return output
             
-    def getPasswordLen(self, password:str): 
-        pass_len = len(password)
-        pass_len_len = len(str(pass_len))
+    def getPasswordLen(self, extra:str):
+        time.sleep(0.1)
+        passw = self.page.query_selector(self.Selectors.pass_len_counter).inner_text() + extra
+        passw_len = len(passw)
+        passw_len_len = len(str(passw_len))
 
-        return str(pass_len_len + pass_len)
+        print(passw_len, passw_len_len)
+
+        return str(passw_len + int(passw_len_len)) # wont work occasionally but whatever
 
 
     def safeReplace(self, text, what_to_replace, replacement, count=0):
