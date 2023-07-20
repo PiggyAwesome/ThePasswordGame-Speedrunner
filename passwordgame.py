@@ -517,18 +517,16 @@ class Password:
         self.leap_year = self.getLeapYear()
         self.two_letter_element = self.get2LetterElement()
         self.punctuation = self.getPunctuation()
+        self.digits = self.getDigits(self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation)
 
-        self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation
-        return self.password
-
-    def get_part_2(self):
-        self.digits = self.getDigits()
         self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits 
         return self.password
+
 
     def get_part_3(self):
         self.captcha = self.solveCaptcha()
         self.digits = self.getDigits(passw=self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase)
+
         self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase
         return self.password
 
@@ -536,7 +534,7 @@ class Password:
         self.country = self.findCountryName()
         self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country
         return self.password
-
+        
     def get_part_5(self):
         self.chess_notation = self.solveChessPuzzle()
         self.digits = self.getDigits(passw=self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation)
@@ -660,13 +658,15 @@ class Password:
             
     def getPasswordLen(self, extra:str):
         time.sleep(0.1)
-        passw = self.page.query_selector(self.Selectors.pass_len_counter).inner_text() + extra
-        passw_len = len(passw)
+        passw_selector = self.page.query_selector(self.Selectors.pass_len_counter)
+        passw_len = passw_selector.inner_text().strip()
+        
+        print(passw_len)
+
         passw_len_len = len(str(passw_len))
 
-        print(passw_len, passw_len_len)
 
-        return str(passw_len + int(passw_len_len)) # wont work occasionally but whatever
+        return str(int(passw_len) + int(passw_len_len)) # wont work occasionally but whatever
 
 
     def safeReplace(self, text, what_to_replace, replacement, count=0):
@@ -706,13 +706,13 @@ def run_playwright(artificialDelay = 1):
         
 
         password_field.fill(password.get_part_1())
-        time.sleep(1)
 
-        password_field.fill(password.get_part_2())
         time.sleep(1)
-
         password_field.fill(password.get_part_3())
         time.sleep(2)
+
+        # password_field.fill(password.get_part_3())
+        # time.sleep(2+5)
 
         password_field.fill(password.get_part_4())
         time.sleep(1)
