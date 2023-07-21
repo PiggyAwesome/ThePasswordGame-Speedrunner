@@ -15,7 +15,7 @@ from stockfish import Stockfish
 
 geolocator = Nominatim(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 OPR/99.0.0.0")
 
-engine = Stockfish(path="stockfish.exe", depth=15)
+engine = Stockfish(path="/usr/local/Cellar/stockfish/16/bin/stockfish", depth=15)
 
 
 
@@ -131,7 +131,7 @@ class Password:
         result = "!"*k
         return result
 
-    def getDigits(self, passw=None, Exit=True):
+    def getDigits(self, passw=None, length:None|int=None, Exit=True):
         "The digits in your password must add up to 25."
         passw = self.password if passw == None else passw
 
@@ -148,11 +148,15 @@ class Password:
                 return False
         
 
-
         quotient = add_up_to // 9
         remainder = add_up_to % 9
 
         result = ("9" * quotient) + str(remainder)
+
+        if length != None:
+            while len(result) < length:
+                result += "0"
+
         return result
 
     def getMonth(self):
@@ -534,7 +538,7 @@ class Password:
         self.country = self.findCountryName()
         self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country
         return self.password
-        
+
     def get_part_5(self):
         self.chess_notation = self.solveChessPuzzle()
         self.digits = self.getDigits(passw=self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation)
@@ -564,40 +568,50 @@ class Password:
         return self.password
     
     def get_part_8(self):
+        self.underscores = self.getUnderscores()
         self.nono_letters = self.sacrificeLetters()
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul + self.underscores
         return self.password
 
     def get_part_9(self):
         self.hex_colour = self.getHexColour()
-        self.password_len = self.getPasswordLen(self.hex_colour)
-        print(self.password_len)
-        self.digits = self.getDigits(passw=self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len)
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len
+        self.password += self.hex_colour
         return self.password
 
+    def get_part_10(self):
+
+        self.password_len = self.getPasswordLen()
+        # print(self.password_len)
+
+        print("Old_digits", self.digits)
+        self.digits = self.getDigits(length=len(self.digits), passw=self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len)
+        print("New_digits", self.digits)
+
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len + self.underscores
+        return self.password
+
+    def getUnderscores(self):
+        bold_amount = self.password.count("<strong>")
+        return bold_amount*2*"_"
 
 
     def makeItalic(self, password_with_bold:str):
         "Your password must contain twice as many italic characters as bold."
-        bold_amount = password_with_bold.count("<strong>")
         # password_without_bold = password_with_bold.replace("<strong>", "<>").replace("</strong>", "</>")
         # password_with_italics = "<em>" + password_without_bold[:bold_amount*2+password_without_bold[:bold_amount*2].count("<>")] + "</em>" + password_without_bold[bold_amount*2:] # = f"<em>{password_without_bold[italic_num]}</em>"
 
         # password_with_bold_italics = password_with_italics.replace("<>", "<strong>").replace("</>", "</strong>")
         # return password_with_bold_italics
+        first_underscore_location = password_with_bold.find("_")
+        underscores = password_with_bold[first_underscore_location:]
 
-        return password_with_bold + "<em>" + "_"*bold_amount*2 + "</em>"
+        return password_with_bold.replace(underscores, "<em>" + password_with_bold[first_underscore_location:] + "</em>")
     
     def makeWingdings(self, password:str):
-        bold_amount = password.count("<strong>")
-        italics_loc = password.find("<em>" + "_"*bold_amount*2 + "</em>")
-        wingdings =  password[:italics_loc] + '<span style="font-family: Wingdings">' + "<em>" + "_"*bold_amount*2 + "</em>" + '</span>'
-        return wingdings
-   
-    def addWingdings(self, password:str):
-        end_loc = password.find('</span>')
-        wingdings = password.removesuffix('</span>') + int((len(password))/3)*"_" 
+        first_underscore_location = password.find("<em>_")
+        underscores_italic = password[first_underscore_location:]
+        wingdings = password.replace(underscores_italic, '<span style="font-family: Wingdings">' + underscores_italic + '</span>')
+        print(wingdings)
         return wingdings
 
     def getHexColour(self):
@@ -608,7 +622,7 @@ class Password:
             rgb = style.replace("background: rgb(", "").replace(");", "")
             r,g,b = rgb.split(",")
             hex_colour = f'#{int(r.strip()):02x}{int(g.strip()):02x}{int(b.strip()):02x}'
-            # print(hex_colour)
+            print(hex_colour)
             for nono_letter in self.nono_letters:
                 if nono_letter.lower() in hex_colour or self.getDigits(passw=self.password + hex_colour, Exit=False) == False:
                     colour_button = self.page.query_selector(self.Selectors.new_colour_btn)
@@ -656,17 +670,22 @@ class Password:
         # self.password_rich = output
         return output
             
-    def getPasswordLen(self, extra:str):
-        time.sleep(0.1)
-        passw_selector = self.page.query_selector(self.Selectors.pass_len_counter)
-        passw_len = passw_selector.inner_text().strip()
+    def getPasswordLen(self, extra:str=""):
+        # time.sleep(0.1)
+        passw_selector = self.page.query_selector(self.Selectors.password_field)
+        password = passw_selector.inner_text().strip()
+
+        x = str(len(list(password)))
+        print(x)
+        return x
+        # passw_len = passw_selector.inner_text().strip()
         
-        print(passw_len)
+        # print(passw_len)
 
-        passw_len_len = len(str(passw_len))
+        # passw_len_len = len(str(passw_len))
 
 
-        return str(int(passw_len) + int(passw_len_len)) # wont work occasionally but whatever
+        # return str(int(passw_len) + int(passw_len_len)) # wont work occasionally but whatever
 
 
     def safeReplace(self, text, what_to_replace, replacement, count=0):
@@ -737,7 +756,7 @@ def run_playwright(artificialDelay = 1):
         fill_rich(password.changeFontSizeDigits(password.makeWingdings(password.makeItalic(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_9()))))))
         time.sleep(1)
 
-        # fill_rich(password.changeFontSizeDigits(password.makeWingdings(password.makeItalic(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_10()))))))
+        fill_rich(password.changeFontSizeDigits(password.makeWingdings(password.makeItalic(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_10()))))))
         time.sleep(1)
 
         input()
