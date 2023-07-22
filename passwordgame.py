@@ -414,15 +414,6 @@ class Password:
         return result
 
 
-    def boldVowels(self, password:str):
-        "All the vowels in your password must be bolded."
-        vowels = ["a", "e", "i", "o", "u", "y", "A", "E", "I", "O", "U", "Y"]
-
-        new_password = password
-        for vowel in vowels:
-            new_password = self.safeReplace(new_password, vowel, f"<strong>{vowel}</strong>")
-        self.password_rich = new_password
-        return new_password
 
     def getYouTubeVideo(self):
         "Your password must include the URL of a xx minute yy second long YouTube video."
@@ -553,7 +544,7 @@ class Password:
 
     def get_part_6(self):
         self.paul = self.evolvePaul()
-        self.food4paul = self.feedPaul()*5
+        self.food4paul = self.feedPaul()*8
 
         self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.paul + self.food4paul
         return self.password
@@ -568,9 +559,8 @@ class Password:
         return self.password
     
     def get_part_8(self):
-        self.underscores = self.getUnderscores()
         self.nono_letters = self.sacrificeLetters()
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul + self.underscores
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul
         return self.password
 
     def get_part_9(self):
@@ -579,7 +569,6 @@ class Password:
         return self.password
 
     def get_part_10(self):
-
         self.password_len = self.getPasswordLen()
         # print(self.password_len)
 
@@ -587,32 +576,42 @@ class Password:
         self.digits = self.getDigits(length=len(self.digits), passw=self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len)
         print("New_digits", self.digits)
 
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len + self.underscores
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len
         return self.password
 
-    def getUnderscores(self):
-        bold_amount = self.password.count("<strong>")
+    def getUnderscores(self, passw=None):
+        passw = passw if passw != None else self.page.query_selector(self.Selectors.password_field).inner_html()
+        bold_amount = passw.count("<strong>")
+        # print(bold_amount)
+        # print(bold_amount*2*"_")
         return bold_amount*2*"_"
 
 
-    def makeItalic(self, password_with_bold:str):
+    def makeItalic_and_Wingdings(self, password:str):
         "Your password must contain twice as many italic characters as bold."
-        # password_without_bold = password_with_bold.replace("<strong>", "<>").replace("</strong>", "</>")
-        # password_with_italics = "<em>" + password_without_bold[:bold_amount*2+password_without_bold[:bold_amount*2].count("<>")] + "</em>" + password_without_bold[bold_amount*2:] # = f"<em>{password_without_bold[italic_num]}</em>"
-
-        # password_with_bold_italics = password_with_italics.replace("<>", "<strong>").replace("</>", "</strong>")
-        # return password_with_bold_italics
-        first_underscore_location = password_with_bold.find("_")
-        underscores = password_with_bold[first_underscore_location:]
-
-        return password_with_bold.replace(underscores, "<em>" + password_with_bold[first_underscore_location:] + "</em>")
+        # print(password)
+        
+        underscores = password.count("<strong>")*2*"_"
+        result = password + '<span style="font-family: Wingdings"><em>' + underscores + '</em></span>'
+        # print(result)
+        return result
     
-    def makeWingdings(self, password:str):
-        first_underscore_location = password.find("<em>_")
-        underscores_italic = password[first_underscore_location:]
-        wingdings = password.replace(underscores_italic, '<span style="font-family: Wingdings">' + underscores_italic + '</span>')
-        print(wingdings)
-        return wingdings
+    def boldVowels(self, password:str):
+        "All the vowels in your password must be bolded."
+        vowels = ["a", "e", "i", "o", "u", "y", "A", "E", "I", "O", "U", "Y"]
+
+        new_password = password
+        for vowel in vowels:
+            new_password = self.safeReplace(new_password, vowel, f"<strong>{vowel}</strong>")
+        self.password_rich = new_password
+        return new_password
+
+    # def makeWingdings(self, password:str):
+    #     first_underscore_location = password.find("<em>_")
+    #     underscores_italic = password[first_underscore_location:]
+    #     wingdings = password.replace(underscores_italic, '<span style="font-family: Wingdings">' + underscores_italic + '</span>')
+    #     print(wingdings)
+    #     return wingdings
 
     def getHexColour(self):
         retry = True
@@ -673,11 +672,17 @@ class Password:
     def getPasswordLen(self, extra:str=""):
         # time.sleep(0.1)
         passw_selector = self.page.query_selector(self.Selectors.password_field)
-        password = passw_selector.inner_text().strip()
+
+        password = passw_selector.inner_text().strip().replace("🏋️‍♂️", "*")
+
+        print(password)
+        print(list(password))
 
         x = str(len(list(password)))
-        print(x)
-        return x
+
+        result = x + str(len(x))
+        
+        return result
         # passw_len = passw_selector.inner_text().strip()
         
         # print(passw_len)
@@ -694,7 +699,28 @@ class Password:
         replaced_text = re.sub(pattern, replacement, text, count)
         return replaced_text
 
+
+    def makePasswordPrime(self):
+        pass_len = len(list(self.password.replace("🏋️‍♂️", "*")))
+        while self.isPrime(pass_len)[0] == False:
+            pass_len += 1
+            # success, reason = isPrime(i)
+            # if success:
+            #     print(f"{i}", end=" ")
+        print(pass_len)
+
+
 ############# <<-- Here
+    def isPrime(self, i):
+        for x in range(round(i/2)):
+            if x != i and x != 1 and x != 0:
+                try:
+                    if (i % x) == 0:
+                        return [False, x]
+                except: 
+                    pass
+        return [True, 0]
+
 
     def __str__(self) -> str:
         password = ""
@@ -749,14 +775,16 @@ def run_playwright(artificialDelay = 1):
         fill_rich(password.boldVowels(password.get_part_7()))
         time.sleep(1)
 
-        fill_rich(password.makeWingdings(password.makeItalic(password.boldVowels(password.get_part_8()))))
+        fill_rich(password.makeItalic_and_Wingdings(password.boldVowels(password.get_part_8())))
         time.sleep(1)
+        # input()
 
         # print(password.changeFontSizeLetters(password.get_part_9()))
-        fill_rich(password.changeFontSizeDigits(password.makeWingdings(password.makeItalic(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_9()))))))
+
+        fill_rich(password.changeFontSizeDigits(password.makeItalic_and_Wingdings(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_9())))))
         time.sleep(1)
 
-        fill_rich(password.changeFontSizeDigits(password.makeWingdings(password.makeItalic(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_10()))))))
+        fill_rich(password.changeFontSizeDigits(password.makeItalic_and_Wingdings(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_10())))))
         time.sleep(1)
 
         input()
