@@ -51,8 +51,9 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 
 ### Credit
 #### A big thanks to:
-+ @nickacide for debugging the website code, and helping me think of solutions
-+ @pog5 for creating a helpful guide and jumpstarting my progress
++ @[nickacide](https://github.com/nickacide) for debugging the website code, and helping me think of solutions
++ @[pog5](https://github.com/pog5) for creating a [helpful guide](https://github.com/pog5/nealpasswordgame) and jumpstarting my progress
++ @[shelerr](https://www.youtube.com/@shelerr) for making ["the spreadsheet"](https://drive.google.com/file/d/1UZdXQVfrnDnJ1WtWPsZiYCbO2BPsRCip/view)
 
 #### A big 🖕 to:
 + Whatever program obfusated Neal's code.
