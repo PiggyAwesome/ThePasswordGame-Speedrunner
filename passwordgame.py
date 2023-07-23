@@ -15,7 +15,7 @@ from stockfish import Stockfish
 
 geolocator = Nominatim(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 OPR/99.0.0.0")
 
-engine = Stockfish(path="/usr/local/Cellar/stockfish/16/bin/stockfish", depth=15)
+engine = Stockfish(path="stockfish.exe", depth=15)
 
 
 
@@ -134,19 +134,22 @@ class Password:
     def getDigits(self, passw=None, length:None|int=None, Exit=True):
         "The digits in your password must add up to 25."
         passw = self.password if passw == None else passw
-
+    
         add_up_to = 25
         for character in passw:
             if character.isdigit():
                 add_up_to -= int(character)
 
+
         if add_up_to < 0:
             if Exit == True:
-                input("Yikes! You got unlucky with the digits, retry needed")
-                exit()
+                print("Yikes! You got unlucky with the digits, retry needed")
+                raise IndentationError()
             else:
                 return False
-        
+
+        print("PASSED DIGITS ADD UP TO:", 25-add_up_to, "| GOOD!")
+
 
         quotient = add_up_to // 9
         remainder = add_up_to % 9
@@ -348,9 +351,9 @@ class Password:
                 # print(number, found_element)
                 raise TypeError("Idk why this happened, but I dont want to find out")
         
-        print(f"Found these elements in your password: {elementsAlreadyInPassword} = {current_value}")
+        # print(f"Found these elements in your password: {elementsAlreadyInPassword} = {current_value}")
         needed_value = add_up_to - current_value
-        print(f"Needed value: {needed_value}")
+        # print(f"Needed value: {needed_value}")
 
 
         with open("assets/number_to_element.json", 'rb') as file:
@@ -366,8 +369,8 @@ class Password:
 
         if needed_value < 0:
             self.page.query_selector(self.Selectors.password_field).evaluate(f"node => node.innerHTML = '{og_pass}'"); 
-            input("Yikes! You got unlucky with the elements, the atomic numbers in your password are too big. Retry is needed.\nTIP: If you want this error to occur less frequently for everyone, you can help by finding YouTube videos without periodic table elements in their links, and then making an issue, or pull request with the links updated in assets/youtube_links.json. This will help grow the database, and lower the chances of failing the challenge.")
-            exit() 
+            print("Yikes! You got unlucky with the elements, the atomic numbers in your password are too big. Retry is needed.\nTIP: If you want this error to occur less frequently for everyone, you can help by finding YouTube videos without periodic table elements in their links, and then making an issue, or pull request with the links updated in assets/youtube_links.json. This will help grow the database, and lower the chances of failing the challenge.")
+            raise IndentationError() 
 
         elementsToAddToPassword = {}
         if needed_value > 100:
@@ -381,7 +384,7 @@ class Password:
 
         result = "".join(elementsToAddToPassword)
 
-        print(f"Needed elements: {elementsToAddToPassword}")
+        # print(f"Needed elements: {elementsToAddToPassword}")
 
         return result
 
@@ -478,7 +481,7 @@ class Password:
         letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         for character in self.password.upper():
             if character in letters:
-                letters = letters.replace(character, "")
+                letters = letters.replace(character, "")    
 
         letters_to_remove = list(letters)[:2]
 
@@ -489,8 +492,8 @@ class Password:
                 self.affirmation = "iamenough"
                 return self.sacrificeLetters()
             else:
-                input("Yikes! You got unlucky with the letter sacrificing, all letters are used. Retry is needed")
-                exit()
+                print("Yikes! You got unlucky with the letter sacrificing, all letters are used. Retry is needed")
+                raise IndentationError()
 
 
         for letter in letters_to_remove:
@@ -544,7 +547,7 @@ class Password:
 
     def get_part_6(self):
         self.paul = self.evolvePaul()
-        self.food4paul = self.feedPaul()*8
+        self.food4paul = self.feedPaul()*3
 
         self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.paul + self.food4paul
         return self.password
@@ -569,29 +572,63 @@ class Password:
         return self.password
 
     def get_part_10(self):
-        self.password_len = self.getPasswordLen()
-        # print(self.password_len)
 
-        print("Old_digits", self.digits)
-        self.digits = self.getDigits(length=len(self.digits), passw=self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len)
-        print("New_digits", self.digits)
+        print("\nBefore rule 32:")
+        
+        password_len = int(self.getPasswordLen(self.password + self.underscore_amount*"_"))
+        print("Length:", password_len)
+        print("Digits:", self.digits)
 
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len
+        extra_0 = ""
+        while True:
+            digits = self.getDigits(Exit=False, length=len(self.digits), passw=self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + str(password_len))
+            if digits == False:
+                extra_0 += "0"
+                password_len += 1
+                print("\nMade password 1 longer\n")
+            else:
+                break
+        self.digits = digits
+        self.password_len = str(password_len)
+        self.extra_0 = extra_0
+
+        print("\nAfter rule 32:")
+
+        print("Digits", self.digits)
+        print("Length:", self.password_len)
+        print("Extra:", self.extra_0)
+
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len + self.extra_0
+        
         return self.password
 
-    def getUnderscores(self, passw=None):
-        passw = passw if passw != None else self.page.query_selector(self.Selectors.password_field).inner_html()
-        bold_amount = passw.count("<strong>")
-        # print(bold_amount)
-        # print(bold_amount*2*"_")
-        return bold_amount*2*"_"
+    def get_part_11(self):
+        input("Click enter for part 11")
+        self.extra_to_make_prime, self.password_len = self.makePasswordPrime()
+
+        # self.password_len = self.getPasswordLen()
+
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len + self.extra_0 + self.extra_to_make_prime
+        return self.password
+
+
+    def getUnderscores(self, password:str):
+        amount = 0
+        for x in ["a", "e", "i", "o", "u", "y", "A", "E", "I", "O", "U", "Y", "0"]:
+            amount += password.count(x)
+        underscores = amount*2*"_"
+
+        return underscores
 
 
     def makeItalic_and_Wingdings(self, password:str):
         "Your password must contain twice as many italic characters as bold."
         # print(password)
-        
-        underscores = password.count("<strong>")*2*"_"
+        amount = password.count("<strong>") + password.count("0")
+
+        self.underscore_amount = amount*2
+
+        underscores = self.underscore_amount*"_"
         result = password + '<span style="font-family: Wingdings"><em>' + underscores + '</em></span>'
         # print(result)
         return result
@@ -669,19 +706,23 @@ class Password:
         # self.password_rich = output
         return output
             
-    def getPasswordLen(self, extra:str=""):
+    def getPasswordLen(self, password):
         # time.sleep(0.1)
-        passw_selector = self.page.query_selector(self.Selectors.password_field)
+        # passw_selector = self.page.query_selector(self.Selectors.password_field)
 
-        password = passw_selector.inner_text().strip().replace("🏋️‍♂️", "*")
+        # password = passw_selector.inner_text().strip()
 
+        password = password.replace("🏋️‍♂️", "*")
         print(password)
-        print(list(password))
+        print(list(password))   
 
-        x = str(len(list(password)))
+        x = len(list(password))
 
-        result = x + str(len(x))
-        
+        print("PASS_LEN_BEFORE_LEN_NUMBER_ADDED:", x)
+        result = str(x + len(str(x)))
+
+        print("PASS_LEN_AFTER_LEN_NUMBER_ADDED:", result)
+
         return result
         # passw_len = passw_selector.inner_text().strip()
         
@@ -692,8 +733,10 @@ class Password:
 
         # return str(int(passw_len) + int(passw_len_len)) # wont work occasionally but whatever
 
+    def addUnderscore(self, password):
+        return password + '<span style="font-family: Wingdings"><em>' + self.underscore_amount*"_" + '</em></span>'
 
-    def safeReplace(self, text, what_to_replace, replacement, count=0):
+    def safeReplace(self, text, what_to_replace, replacement, count=0): 
         pattern = r"(?![^<]*>)" + f"{what_to_replace}"
 
         replaced_text = re.sub(pattern, replacement, text, count)
@@ -701,26 +744,29 @@ class Password:
 
 
     def makePasswordPrime(self):
-        pass_len = len(list(self.password.replace("🏋️‍♂️", "*")))
-        while self.isPrime(pass_len)[0] == False:
-            pass_len += 1
+        pass_len = self.underscore_amount + len(self.password.replace("🏋️‍♂️", "*"))
+
+        extra_0s = 0
+        while self.isPrime(pass_len + extra_0s) == False:
+            extra_0s += 1
+        
             # success, reason = isPrime(i)
             # if success:
             #     print(f"{i}", end=" ")
+        # print(pass_len*"0")
         print(pass_len)
+        return extra_0s*"0", str(pass_len + extra_0s)
+
+
+    def isPrime(self, n):
+        for i in range(2,n):
+            if (n%i) == 0:
+                return False
+            
+        return True
 
 
 ############# <<-- Here
-    def isPrime(self, i):
-        for x in range(round(i/2)):
-            if x != i and x != 1 and x != 0:
-                try:
-                    if (i % x) == 0:
-                        return [False, x]
-                except: 
-                    pass
-        return [True, 0]
-
 
     def __str__(self) -> str:
         password = ""
@@ -732,67 +778,76 @@ class Password:
 
 def run_playwright(artificialDelay = 1):
     # Create a Playwright instance
-    with sync_playwright() as playwright:
-        # Create a browser instance
-        browser = playwright.chromium.launch(headless=False)
+    try:
+        with sync_playwright() as playwright:
+            # Create a browser instance
+            browser = playwright.chromium.launch(headless=False)
 
-        # Create a context
-        context = browser.new_context()
+            # Create a context
+            context = browser.new_context()
 
-        # Create a page
-        page = context.new_page()
+            # Create a page
+            page = context.new_page()
 
-        password = Password(page)
+            password = Password(page)
 
-        # Navigate to a URL
-        page.goto('https://neal.fun/password-game/')
-        password_field = page.query_selector(password.Selectors.password_field)
-        password_field.click()
-        
+            # Navigate to a URL
+            page.goto('https://neal.fun/password-game/')
+            password_field = page.query_selector(password.Selectors.password_field)
+            password_field.click()
 
-        password_field.fill(password.get_part_1())
 
-        time.sleep(1)
-        password_field.fill(password.get_part_3())
-        time.sleep(2)
+            password_field.fill(password.get_part_1())
 
-        # password_field.fill(password.get_part_3())
-        # time.sleep(2+5)
+            time.sleep(1)
+            password_field.fill(password.get_part_3())
+            time.sleep(2)
 
-        password_field.fill(password.get_part_4())
-        time.sleep(1)
+            # password_field.fill(password.get_part_3())
+            # time.sleep(2+5)
 
-        def fill_rich(rich_text):
-            password_field.evaluate(f"node => node.innerHTML = '{rich_text}'")
+            password_field.fill(password.get_part_4())
+            time.sleep(1)
 
-        fill_rich(password.boldVowels(password.get_part_5()))
-        fill_rich(password.boldVowels(password.password))
-        time.sleep(1)
+            def fill_rich(rich_text):
+                password_field.evaluate(f"node => node.innerHTML = '{rich_text}'")
 
-        fill_rich(password.boldVowels(password.get_part_6()))
-        time.sleep(1)
+            fill_rich(password.boldVowels(password.get_part_5()))
+            fill_rich(password.boldVowels(password.password))
+            time.sleep(1)
 
-        fill_rich(password.boldVowels(password.get_part_7()))
-        time.sleep(1)
+            fill_rich(password.boldVowels(password.get_part_6()))
+            time.sleep(1)
 
-        fill_rich(password.makeItalic_and_Wingdings(password.boldVowels(password.get_part_8())))
-        time.sleep(1)
-        # input()
+            fill_rich(password.boldVowels(password.get_part_7()))
+            time.sleep(1)
 
-        # print(password.changeFontSizeLetters(password.get_part_9()))
+            fill_rich(password.makeItalic_and_Wingdings(password.boldVowels(password.get_part_8())))
+            time.sleep(1)
+            # input()
 
-        fill_rich(password.changeFontSizeDigits(password.makeItalic_and_Wingdings(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_9())))))
-        time.sleep(1)
+            # print(password.changeFontSizeLetters(password.get_part_9()))
 
-        fill_rich(password.changeFontSizeDigits(password.makeItalic_and_Wingdings(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_10())))))
-        time.sleep(1)
+            fill_rich(password.changeFontSizeDigits(password.makeItalic_and_Wingdings(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_9())))))
+            time.sleep(1)
 
-        input()
+            fill_rich(password.changeFontSizeDigits(password.boldVowels(password.addUnderscore(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_10())))))
+            time.sleep(1)
 
-        return
+            fill_rich(password.changeFontSizeDigits(password.makeItalic_and_Wingdings(password.boldVowels(password.changeFontSizeLetters_and_makeTimesNewRoman(password.get_part_11())))))
+            time.sleep(1)
+
+            input()
+
+            return False
+    except IndentationError:
+        print()
+        return True
 
 #   #   # Close the browser
 #   #   # context.close()
 #   #   # browser.close()
 
-run_playwright(0.1)
+retry = True
+while retry:
+    retry = run_playwright(0.1) 
