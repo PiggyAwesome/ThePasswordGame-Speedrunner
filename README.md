@@ -40,7 +40,7 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - Automatically finds the name of the country in the geoguesser embed
 - Solves any chess puzzle using the Stockfish chess engine, after parsing the image
 - Automatically balances out all digits, Roman numerals and elements
-- Automatically finds the correct youtube video with exact length. (I made a half-finished scraper before I found thepasswordgame.netlify.app. I diddnt have the heart to delete it so it's just commented out lol)
+- Automatically finds the correct youtube video with exact length. (I made a half-finished scraper before I found "the spreadsheet" . I diddnt have the heart to delete it so it's just commented out lol)
 - Automatically ajusts the password's length to be a prime number
 
 
@@ -48,4 +48,13 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - `Rule 16` Occasionally, the best chess move will be incorrect.
 - `Rule 24` Fails a significant amount of times because of unwanted elements in the video url. (You can help fix this issue by finding new links for assets/youtube_links.json)
 
-### Sorry if some parts of my code is ugly. I usually fix it up at the end, but I'm not finished yet.
+
+### Credit
+#### A big thanks to:
++ @nickacide for debugging the website code, and helping me think of solutions
++ @pog5 for creating a helpful guide and jumpstarting my progress
+
+#### A big 🖕 to:
++ Whatever program obfusated Neal's code.
+
+#### Sorry if some parts of my code is ugly. I usually fix it up at the end, but I'm not finished yet.
