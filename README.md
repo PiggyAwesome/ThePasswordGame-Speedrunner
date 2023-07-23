@@ -1,6 +1,5 @@
 # ThePasswordGame-Auto
 Complex python script that plays https://neal.fun/password-game/ completely automatically
-### Src releases at 10 stars ⭐
 
 - [x] Rule 1 `Your password must be at least 5 characters.`
 - [x] Rule 2 `Your password must include a number.`
@@ -42,10 +41,11 @@ Complex python script that plays https://neal.fun/password-game/ completely auto
 - Solves any chess puzzle using the Stockfish chess engine, after parsing the image
 - Automatically balances out all digits, Roman numerals and elements
 - Automatically finds the correct youtube video with exact length. (I made a half-finished scraper before I found thepasswordgame.netlify.app. I diddnt have the heart to delete it so it's just commented out lol)
+- Automatically ajusts the password's length to be a prime number
 
 
 ### Problems:
 - `Rule 16` Occasionally, the best chess move will be incorrect.
 - `Rule 24` Fails a significant amount of times because of unwanted elements in the video url. (You can help fix this issue by finding new links for assets/youtube_links.json)
 
-### Sorry for my ugly code. I usually fix it up at the end, but I'm not finished yet.
+### Sorry if some parts of my code is ugly. I usually fix it up at the end, but I'm not finished yet.
