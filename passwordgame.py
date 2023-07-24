@@ -15,7 +15,7 @@ from stockfish import Stockfish
 
 geolocator = Nominatim(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 OPR/99.0.0.0")
 
-engine = Stockfish(path="stockfish.exe", depth=15)
+engine = Stockfish(path="/usr/local/Cellar/stockfish/16/bin/stockfish", depth=15)
 
 
 
@@ -508,110 +508,6 @@ class Password:
         return letters_to_remove
 
 
-    def get_part_1(self):
-        self.month = self.getMonth()
-        self.sponsor = self.getSponsor()
-        self.roman_numerals = self.getRomanNumeral35()
-        self.leap_year = self.getLeapYear()
-        self.two_letter_element = self.get2LetterElement()
-        self.punctuation = self.getPunctuation()
-        self.digits = self.getDigits(self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation)
-
-        self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits 
-        return self.password
-
-
-    def get_part_3(self):
-        self.captcha = self.solveCaptcha()
-        self.digits = self.getDigits(passw=self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase)
-
-        self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase
-        return self.password
-
-    def get_part_4(self):
-        self.country = self.findCountryName()
-        self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country
-        return self.password
-
-    def get_part_5(self):
-        self.chess_notation = self.solveChessPuzzle()
-        self.digits = self.getDigits(passw=self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation)
-        self.paul = self.getPaul()
-        self.extra_elements = self.calculateElements(self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.paul)
-        self.stronk = self.makeStrong()
-        self.affirmation = self.getAffirmation()
-
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.paul
-        return self.password
-
-
-    def get_part_6(self):
-        self.paul = self.evolvePaul()
-        self.food4paul = self.feedPaul()*5
-
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.paul + self.food4paul
-        return self.password
-
-    def get_part_7(self):
-        self.youtube_video = self.getYouTubeVideo()
-        self.digits = self.getDigits(passw=self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul)
-        self.extra_elements = self.calculateElements(self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul)
-
-        
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul
-        return self.password
-    
-    def get_part_8(self):
-        self.nono_letters = self.sacrificeLetters()
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul
-        return self.password
-
-    def get_part_9(self):
-        self.hex_colour = self.getHexColour()
-        self.password += self.hex_colour
-        return self.password
-
-    def get_part_10(self):
-
-        print("\nBefore rule 32:")
-        
-        password_len = int(self.getPasswordLen(self.password + self.underscore_amount*"_"))
-        print("Length:", password_len)
-        print("Digits:", self.digits)
-
-        extra_0 = ""
-        while True:
-            digits = self.getDigits(Exit=False, length=len(self.digits), passw=self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + str(password_len))
-            if digits == False:
-                extra_0 += "0"
-                password_len += 1
-                print("\nMade password 1 longer\n")
-            else:
-                break
-        self.digits = digits
-        self.password_len = str(password_len)
-        self.extra_0 = extra_0
-
-        print("\nAfter rule 32:")
-
-        print("Digits", self.digits)
-        print("Length:", self.password_len)
-        print("Extra:", self.extra_0)
-
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len + self.extra_0
-        
-        return self.password
-
-    def get_part_11(self):
-        # input("Click enter for part 11")
-        self.extra_to_make_prime, self.password_len = self.makePasswordPrime()
-
-    
-        # self.password_len = self.getPasswordLen()
-
-        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len + self.extra_0 + self.extra_to_make_prime
-        return self.password
-
 
     def getUnderscores(self, password:str):
         amount = 0
@@ -745,19 +641,125 @@ class Password:
         return replaced_text
 
 
-    def makePasswordPrime(self):
-        pass_len = self.underscore_amount + int(self.password_len)
 
-        extra_0s = 0
-        while self.isPrime(pass_len + extra_0s) == False:
-            extra_0s += 1
+    def get_part_1(self):
+        self.month = self.getMonth()
+        self.sponsor = self.getSponsor()
+        self.roman_numerals = self.getRomanNumeral35()
+        self.leap_year = self.getLeapYear()
+        self.two_letter_element = self.get2LetterElement()
+        self.punctuation = self.getPunctuation()
+        self.digits = self.getDigits(self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation)
+
+        self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits 
+        return self.password
+
+
+    def get_part_3(self):
+        self.captcha = self.solveCaptcha()
+        self.digits = self.getDigits(passw=self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase)
+
+        self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase
+        return self.password
+
+    def get_part_4(self):
+        self.country = self.findCountryName()
+        self.password = self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country
+        return self.password
+
+    def get_part_5(self):
+        self.chess_notation = self.solveChessPuzzle()
+        self.digits = self.getDigits(passw=self.leap_year + self.two_letter_element + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation)
+        self.paul = self.getPaul()
+        self.extra_elements = self.calculateElements(self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.paul)
+        self.stronk = self.makeStrong()
+        self.affirmation = self.getAffirmation()
+
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.paul
+        return self.password
+
+
+    def get_part_6(self):
+        self.paul = self.evolvePaul()
+        self.food4paul = self.feedPaul()*5
+
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.paul + self.food4paul
+        return self.password
+
+    def get_part_7(self):
+        self.youtube_video = self.getYouTubeVideo()
+        self.digits = self.getDigits(passw=self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul)
+        self.extra_elements = self.calculateElements(self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul)
+
+        
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul
+        return self.password
+    
+    def get_part_8(self):
+        self.nono_letters = self.sacrificeLetters()
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.paul + self.food4paul
+        return self.password
+
+    def get_part_9(self):
+        self.hex_colour = self.getHexColour()
+        self.password += self.hex_colour
+        return self.password
+
+    def get_part_10(self):
+
+        print("\nBefore rule 32:")
+        
+        password_len = int(self.getPasswordLen(self.password + self.underscore_amount*"_"))
+        print("Length:", password_len)
+        print("Digits:", self.digits)
+
+        extra_0 = ""
+        while True:
+            digits = self.getDigits(Exit=False, length=len(self.digits), passw=self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + str(password_len))
+            if digits == False:
+                extra_0 += "0"
+                password_len += 1
+                print("\nMade password 1 longer\n")
+            else:
+                break
+        self.digits = digits
+        self.password_len = str(password_len)
+        self.extra_0 = extra_0
+
+        print("\nAfter rule 32:")
+
+        print("Digits", self.digits)
+        print("Length:", self.password_len)
+        print("Extra:", self.extra_0)
+
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len + self.extra_0
+        
+        return self.password
+
+    def get_part_11(self):
+        # input("Click enter for part 11")
+        self.extra_to_make_prime, self.password_len = self.makePasswordPrime()
+
+    
+        # self.password_len = self.getPasswordLen()
+
+        self.password = self.leap_year + self.roman_numerals + self.sponsor + self.month + self.punctuation + self.digits + self.captcha + self.wordle + self.moon_phase + self.country + self.chess_notation + self.extra_elements + self.stronk + self.affirmation + self.youtube_video + self.hex_colour + self.paul + self.food4paul + self.password_len + self.extra_0 + self.extra_to_make_prime
+        return self.password
+
+
+    def makePasswordPrime(self):
+        pass_len = int(self.password_len)
+
+        extra_0_amount = 0
+        while self.isPrime(pass_len + extra_0_amount) == False:
+            extra_0_amount += 1
         
             # success, reason = isPrime(i)
             # if success:
             #     print(f"{i}", end=" ")
         # print(pass_len*"0")
-        print(pass_len + extra_0s)
-        return extra_0s*"0", str(pass_len + extra_0s)
+        print(pass_len + extra_0_amount)
+        return extra_0_amount*"0", str(pass_len + extra_0_amount)
 ###
 ### Still need to figure out wtf makes it not work. The filled password is more than the current prime number.
 ###
