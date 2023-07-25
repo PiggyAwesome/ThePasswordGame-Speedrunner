@@ -1,5 +1,6 @@
 # ThePasswordGame-Auto
 Complex python script that plays https://neal.fun/password-game/ completely automatically
+This program is quite slow compared to console scripts. To make up for it, it has advances features that makes it able to complete most of the rules if neal ever adds new content to them this is because, instead of using set answers for the puzzles, it solves them in real time like a human would.
 
 - [x] Rule 1 `Your password must be at least 5 characters.`
 - [x] Rule 2 `Your password must include a number.`
